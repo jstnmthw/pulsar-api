@@ -6,13 +6,17 @@ on:
   pull_request:
     branches: [main]
 
+env:
+  CI: true
+
 jobs:
   build:
     runs-on: ubuntu-latest
 
     strategy:
+      fail-fast: false
       matrix:
-        node-version: [16, 18]
+        node-version: [16, 18, 20]
 
     steps:
       - uses: actions/checkout@v3
@@ -21,12 +25,24 @@ jobs:
         with:
           node-version: ${{ matrix.node-version }}
           cache: 'npm'
-      - run: npm install
-      - run: npm run lint
-      - run: npm run build
-      - run: npm test
-      - run: npm run test:cov
-      - name: Coveralls GitHub Action
+
+      - name: Install
+        run: npm install
+
+      - name: Lint
+        run: npm run lint
+
+      - name: Build
+        run: npm run build
+
+      - name: Test
+        run: npm test
+
+      - name: Generate Coverage
+        run: npm run test:cov
+
+      - name: Coveralls
         uses: coverallsapp/github-action@v2
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
+          flag-name: ${{matrix.os}}-node-${{ matrix.node }}
