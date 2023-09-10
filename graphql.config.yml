@@ -1,0 +1,6 @@
+projects:
+  nest-prisma-starter:
+    schema: src/schema.graphql
+    extensions:
+      endpoints:
+        dev: http://localhost:3000/graphql
