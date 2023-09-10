@@ -1,8 +1,8 @@
 # Pulsar API
 This is a boilerplate starter-kit for building a GraphQL API with [NestJS](https://nestjs.com/), [Prisma](https://www.prisma.io/) and [GraphQL](https://graphql.org/). The starter-kit is based on [NestJS GraphQL starter](https://github.com/notiz-dev/nestjs-prisma-starter).
-    
-[![Build Status](https://travis-ci.org/robingenz/nestjs-prisma-graphql-starter.svg?branch=master)](https://travis-ci.org/robingenz/nestjs-prisma-graphql-starter)
-[![Coverage Status](https://coveralls.io/repos/github/robingenz/nestjs-prisma-graphql-starter/badge.svg?branch=master)](https://coveralls.io/github/robingenz/nestjs-prisma-graphql-starter?branch=master)
+
+![main](https://github.com/jstnmthw/pulsar-api/actions/workflows/ci.yml/badge.svg)
+[![Coverage Status](https://coveralls.io/repos/github/jstnmthw/pulsar-api/badge.svg?branch=main)](https://coveralls.io/github/jstnmthw/pulsar-api?branch=main)
 [![License](https://img.shields.io/badge/License-MIT-blue.svg)](https://opensource.org/licenses/MIT)
 
 
