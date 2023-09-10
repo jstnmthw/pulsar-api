@@ -2,7 +2,7 @@
   "name": "pulsar-api",
   "version": "1.0.0",
   "description": "Pulsar API - NestJS Prisma GraphQL API",
-  "author": "Justin Rivera",
+  "author": "Justin Mathew",
   "license": "MIT",
   "keywords": [
     "nestjs",
@@ -14,10 +14,10 @@
   ],
   "repository": {
     "type": "git",
-    "url": "https://github.com/fivethree-team/nestjs-prisma-client-example.git"
+    "url": "https://github.com/jstnmthw/pulsar-api"
   },
   "bugs": {
-    "url": "https://github.com/fivethree-team/nestjs-prisma-client-example/issues"
+    "url": "https://github.com/jstnmthw/pulsar-api/issues"
   },
   "scripts": {
     "build": "nest build",
