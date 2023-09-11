@@ -5,7 +5,9 @@ import { SecurityConfig } from '../common/configs/config.interface';
 
 @Injectable()
 export class PasswordService {
-  get bcryptSaltRounds(): string | number {
+  constructor(private configService: ConfigService) {}
+
+  bcryptSaltRounds(): string | number {
     const securityConfig = this.configService.get<SecurityConfig>('security');
     const saltOrRounds = securityConfig.bcryptSaltOrRound;
 
@@ -14,13 +16,11 @@ export class PasswordService {
       : saltOrRounds;
   }
 
-  constructor(private configService: ConfigService) {}
-
   validatePassword(password: string, hashedPassword: string): Promise<boolean> {
     return compare(password, hashedPassword);
   }
 
   hashPassword(password: string): Promise<string> {
-    return hash(password, this.bcryptSaltRounds);
+    return hash(password, this.bcryptSaltRounds());
   }
 }
