@@ -19,7 +19,12 @@ describe('JwtStrategy', () => {
         {
           provide: ConfigService,
           useValue: {
-            get: jest.fn().mockReturnValue({ bcryptSaltOrRound: 10 }),
+            get: jest
+              .fn()
+              .mockReturnValue({
+                bcryptSaltOrRound: 10,
+                JWT_ACCESS_SECRET: 'secret',
+              }),
           },
         },
         {
