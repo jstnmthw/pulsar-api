@@ -1,7 +1,7 @@
-import { Test, TestingModule } from '@nestjs/testing';
 import { Chance } from 'chance';
-import { AppController } from '../../../app.controller';
-import { AppService } from '../../../app.service';
+import { AppService } from '@/app.service';
+import { AppController } from '@/app.controller';
+import { Test, TestingModule } from '@nestjs/testing';
 
 const chance = new Chance();
 

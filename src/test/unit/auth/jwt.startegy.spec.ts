@@ -1,9 +1,9 @@
-import { Test, TestingModule } from '@nestjs/testing';
-import { ConfigService } from '@nestjs/config';
 import { User } from '@prisma/client';
-import { JwtStrategy } from '../../../auth/jwt.strategy';
-import { AuthService } from '../../../auth/auth.service';
-import { JwtDto } from '../../../auth/dto/jwt.dto';
+import { JwtDto } from '@/auth/dto/jwt.dto';
+import { JwtStrategy } from '@/auth/jwt.strategy';
+import { AuthService } from '@/auth/auth.service';
+import { ConfigService } from '@nestjs/config';
+import { Test, TestingModule } from '@nestjs/testing';
 
 describe('JwtStrategy', () => {
   let strategy: JwtStrategy;
@@ -19,12 +19,10 @@ describe('JwtStrategy', () => {
         {
           provide: ConfigService,
           useValue: {
-            get: jest
-              .fn()
-              .mockReturnValue({
-                bcryptSaltOrRound: 10,
-                JWT_ACCESS_SECRET: 'secret',
-              }),
+            get: jest.fn().mockReturnValue({
+              bcryptSaltOrRound: 10,
+              JWT_ACCESS_SECRET: 'secret',
+            }),
           },
         },
         {

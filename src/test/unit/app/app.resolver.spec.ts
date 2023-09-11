@@ -1,7 +1,7 @@
-import { Test, TestingModule } from '@nestjs/testing';
 import { Chance } from 'chance';
-import { AppResolver } from '../../../app.resolver';
-import { AppService } from '../../../app.service';
+import { AppResolver } from '@/app.resolver';
+import { AppService } from '@/app.service';
+import { Test, TestingModule } from '@nestjs/testing';
 
 const chance = new Chance();
 
@@ -21,6 +21,7 @@ describe('AppResolver', () => {
       expect(appResolver.helloWorld()).toBe('Hello World!');
     });
   });
+
   describe('hello', () => {
     it('should return "Hello ${name}!"', () => {
       const name = chance.name();

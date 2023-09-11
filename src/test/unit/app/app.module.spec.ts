@@ -1,7 +1,7 @@
+import { AppService } from '@/app.service';
+import { AppResolver } from '@/app.resolver';
 import { Test, TestingModule } from '@nestjs/testing';
 import { ConfigModule, ConfigService } from '@nestjs/config';
-import { AppService } from '../../../app.service';
-import { AppResolver } from '../../../app.resolver';
 
 describe('AppModule', () => {
   let appModule: TestingModule;
