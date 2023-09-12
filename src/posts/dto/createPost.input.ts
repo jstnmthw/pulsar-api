@@ -3,11 +3,11 @@ import { InputType, Field } from '@nestjs/graphql';
 
 @InputType()
 export class CreatePostInput {
-  @Field()
-  @IsNotEmpty()
-  content: string;
+	@Field()
+	@IsNotEmpty()
+	content: string;
 
-  @Field()
-  @IsNotEmpty()
-  title: string;
+	@Field()
+	@IsNotEmpty()
+	title: string;
 }

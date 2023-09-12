@@ -4,5 +4,5 @@ import { Token } from './token.model';
 
 @ObjectType()
 export class Auth extends Token {
-  user: User;
+	user: User;
 }

@@ -1,32 +1,21 @@
 import { AppService } from '@/app.service';
 import { AppResolver } from '@/app.resolver';
 import { Test, TestingModule } from '@nestjs/testing';
-import { ConfigModule, ConfigService } from '@nestjs/config';
 
 describe('AppModule', () => {
-  let appModule: TestingModule;
+	let appModule: TestingModule;
 
-  beforeAll(async () => {
-    appModule = await Test.createTestingModule({
-      providers: [
-        AppService,
-        AppResolver,
-        ConfigModule,
-        {
-          provide: ConfigService,
-          useValue: {
-            get: jest.fn().mockReturnValue({ JWT_ACCESS_SECRET: 'secret' }),
-          },
-        },
-      ],
-    }).compile();
-  });
+	beforeAll(async () => {
+		appModule = await Test.createTestingModule({
+			providers: [AppService, AppResolver],
+		}).compile();
+	});
 
-  afterAll(async () => {
-    await appModule.close();
-  });
+	afterAll(async () => {
+		await appModule.close();
+	});
 
-  it('should be defined', () => {
-    expect(appModule).toBeDefined();
-  });
+	it('should be defined', () => {
+		expect(appModule).toBeDefined();
+	});
 });

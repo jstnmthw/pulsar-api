@@ -3,6 +3,6 @@ import { IsNotEmpty } from 'class-validator';
 
 @ArgsType()
 export class PostIdArgs {
-  @IsNotEmpty()
-  postId: string;
+	@IsNotEmpty()
+	postId: string;
 }

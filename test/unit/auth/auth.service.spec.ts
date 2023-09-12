@@ -1,0 +1,117 @@
+import { JwtService } from '@nestjs/jwt';
+import { AuthService } from '@/auth/auth.service';
+import { PrismaService } from 'nestjs-prisma';
+import { ConfigService } from '@nestjs/config';
+import { PasswordService } from '@/auth/password.service';
+import { Test, TestingModule } from '@nestjs/testing';
+
+// Mocks
+import prismaMock from '@mock/prisma.mock';
+import configMock from '@mock/config.mock';
+
+describe('AuthService', () => {
+	let service: AuthService;
+	let passwordService: PasswordService;
+
+	beforeEach(async () => {
+		const module: TestingModule = await Test.createTestingModule({
+			providers: [
+				AuthService,
+				PasswordService,
+				JwtService,
+				{
+					provide: ConfigService,
+					useValue: configMock,
+				},
+				{
+					provide: PrismaService,
+					useValue: prismaMock,
+				},
+			],
+		}).compile();
+
+		service = module.get<AuthService>(AuthService);
+		passwordService = module.get<PasswordService>(PasswordService);
+	});
+
+	it('should be defined', () => {
+		expect(service).toBeDefined();
+	});
+
+	describe('createUser', () => {
+		it('should create a user', async () => {
+			const user = await service.createUser({
+				email: 'marge@simpson.com',
+				password: 'password',
+			});
+
+			expect(user).toEqual({
+				accessToken: expect.any(String),
+				refreshToken: expect.any(String),
+			});
+		});
+	});
+
+	describe('login', () => {
+		it('should return a token', async () => {
+			const token = await service.login('homer@simpson.com', 'password');
+			expect(token).toBeDefined();
+		});
+	});
+
+	describe('validateUser', () => {
+		it('should return a user', async () => {
+			const user = await service.validateUser('1');
+
+			expect(user).toEqual({
+				id: '1',
+				email: 'homer@simpson.com',
+				password:
+					'$2b$10$deZ/BJ2JxadVqET1xEEN4ekTF3a0F4d3TrVRs2nPqvZZ6aOHjqK/W', //password
+				firstname: 'Homer',
+				lastname: 'Simpson',
+				createdAt: expect.any(Date),
+				updatedAt: expect.any(Date),
+				role: 'USER',
+			});
+		});
+	});
+
+	describe('getUserFromToken', () => {
+		it('should return a user from token', async () => {
+			prismaMock.user.findUnique.mockResolvedValue({
+				id: 1,
+				email: 'test@example.com',
+				password: 'password',
+			});
+
+			const token = service.generateTokens({ userId: '1' });
+			const user = await service.getUserFromToken(token.accessToken);
+
+			expect(user).toBeDefined();
+			expect(user.id).toBe(1);
+			expect(user.email).toBe('test@example.com');
+			expect(user.password).toBe('password');
+		});
+	});
+
+	describe('generateTokens', () => {
+		it('should return a token', async () => {
+			prismaMock.user.findUnique.mockResolvedValue({
+				id: 1,
+				email: 'test@example.com',
+				password: 'password',
+			});
+
+			const token = service.generateTokens({
+				userId: '1',
+			});
+
+			expect(token).toBeDefined();
+			expect(token).toHaveProperty('accessToken');
+			expect(token).toHaveProperty('refreshToken');
+			expect(token.accessToken).toBeDefined();
+			expect(token.refreshToken).toBeDefined();
+		});
+	});
+});

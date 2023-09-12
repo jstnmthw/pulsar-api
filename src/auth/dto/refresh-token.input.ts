@@ -4,8 +4,8 @@ import { GraphQLJWT } from 'graphql-scalars';
 
 @ArgsType()
 export class RefreshTokenInput {
-  @IsNotEmpty()
-  @IsJWT()
-  @Field(() => GraphQLJWT)
-  token: string;
+	@IsNotEmpty()
+	@IsJWT()
+	@Field(() => GraphQLJWT)
+	token: string;
 }
