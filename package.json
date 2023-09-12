@@ -1,6 +1,6 @@
 {
   "name": "pulsar-api",
-  "version": "1.0.0",
+  "version": "0.1.1",
   "description": "Pulsar API - NestJS Prisma GraphQL API",
   "author": "Justin Mathew",
   "license": "MIT",
@@ -40,7 +40,7 @@
     "test:watch": "jest --watch",
     "test:cov": "jest --coverage",
     "test:debug": "node --inspect-brk -r tsconfig-paths/register -r ts-node/register node_modules/.bin/jest --runInBand",
-    "test:e2e": "jest --config test/jest-e2e.json",
+    "test:e2e": "jest --config test/e2e/jest-e2e.json",
     "start:db": "npm run migrate:up && npm run prisma:generate && npm run seed",
     "seed": "prisma db seed",
     "postinstall": "npm run prisma:generate",
@@ -106,6 +106,12 @@
     "typescript": "^5.1.6"
   },
   "jest": {
+    "testPathIgnorePatterns": [
+      "test/e2e"
+    ],
+    "coveragePathIgnorePatterns": [
+      "test/e2e"
+    ],
     "roots": [
       "<rootDir>/test"
     ],
