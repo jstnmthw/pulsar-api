@@ -1,6 +1,7 @@
 // prisma.mock.ts
 
 import { User } from '@prisma/client';
+import { ConflictException } from '@nestjs/common';
 
 const prismaMock = {
 	user: {
@@ -29,7 +30,10 @@ const prismaMock = {
 			}
 			return null;
 		}),
-		create: jest.fn().mockImplementation(() => {
+		create: jest.fn().mockImplementation((params) => {
+			if (params.data.email === 'homer@simpson.com') {
+				throw new ConflictException(`Email ${params.data.email} already used.`);
+			}
 			return {
 				accessToken: 'accessToken',
 				refreshToken: 'refreshToken',

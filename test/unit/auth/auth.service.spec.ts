@@ -11,7 +11,6 @@ import configMock from '@mock/config.mock';
 
 describe('AuthService', () => {
 	let service: AuthService;
-	let passwordService: PasswordService;
 
 	beforeEach(async () => {
 		const module: TestingModule = await Test.createTestingModule({
@@ -31,7 +30,6 @@ describe('AuthService', () => {
 		}).compile();
 
 		service = module.get<AuthService>(AuthService);
-		passwordService = module.get<PasswordService>(PasswordService);
 	});
 
 	it('should be defined', () => {
@@ -49,6 +47,15 @@ describe('AuthService', () => {
 				accessToken: expect.any(String),
 				refreshToken: expect.any(String),
 			});
+		});
+
+		it('should throw an error if user already exists', async () => {
+			await expect(
+				service.createUser({
+					email: 'homer@simpson.com',
+					password: 'password',
+				}),
+			).rejects.toThrowError('Email homer@simpson.com already used.');
 		});
 	});
 
@@ -78,7 +85,7 @@ describe('AuthService', () => {
 	});
 
 	describe('getUserFromToken', () => {
-		it('should return a user from token', async () => {
+		it('should return a user', async () => {
 			prismaMock.user.findUnique.mockResolvedValue({
 				id: 1,
 				email: 'test@example.com',
