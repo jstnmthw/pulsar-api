@@ -4,6 +4,7 @@ import { JwtStrategy } from '@/auth/jwt.strategy';
 import { AuthService } from '@/auth/auth.service';
 import { ConfigService } from '@nestjs/config';
 import { Test, TestingModule } from '@nestjs/testing';
+import configMock from '@mock/config.mock';
 
 describe('JwtStrategy', () => {
 	let strategy: JwtStrategy;
@@ -17,12 +18,7 @@ describe('JwtStrategy', () => {
 				AuthService,
 				{
 					provide: ConfigService,
-					useValue: {
-						get: jest.fn().mockReturnValue({
-							bcryptSaltOrRound: 10,
-							JWT_ACCESS_SECRET: 'secret',
-						}),
-					},
+					useValue: configMock,
 				},
 				{
 					provide: AuthService,

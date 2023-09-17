@@ -5,15 +5,15 @@ import {
 	ConflictException,
 	UnauthorizedException,
 } from '@nestjs/common';
-import { Token } from './models/token.model';
 import { JwtService } from '@nestjs/jwt';
-import { SignupInput } from './dto/signup.input';
-import { ConfigService } from '@nestjs/config';
-import { PasswordService } from './password.service';
-import { SecurityConfig } from '@/common/configs/config.interface';
+import { Token } from './models/token.model';
 import { PrismaService } from 'nestjs-prisma';
 import { Prisma, User } from '@prisma/client';
+import { ConfigService } from '@nestjs/config';
+import { SignupInput } from './dto/signup.input';
+import { PasswordService } from './password.service';
 import { JwtSignModel } from '@/auth/models/jwt-sign.model';
+import { SecurityConfig } from '@/common/configs/config.interface';
 
 @Injectable()
 export class AuthService {
@@ -107,10 +107,10 @@ export class AuthService {
 
 	refreshToken(token: string) {
 		try {
+			const jwt = this.configService.get<JwtSignModel>('JWT_REFRESH_SECRET');
 			const { userId } = this.jwtService.verify(token, {
-				secret: this.configService.get('JWT_REFRESH_SECRET'),
+				secret: jwt.JWT_REFRESH_SECRET,
 			});
-
 			return this.generateTokens({
 				userId,
 			});

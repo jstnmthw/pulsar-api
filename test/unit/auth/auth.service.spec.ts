@@ -1,9 +1,10 @@
 import { JwtService } from '@nestjs/jwt';
-import { AuthService } from '@/auth/auth.service';
 import { PrismaService } from 'nestjs-prisma';
 import { ConfigService } from '@nestjs/config';
-import { PasswordService } from '@/auth/password.service';
+import { AuthService } from '@/auth/auth.service';
+import { ConflictException, UnauthorizedException } from '@nestjs/common';
 import { Test, TestingModule } from '@nestjs/testing';
+import { PasswordService } from '@/auth/password.service';
 
 // Mocks
 import prismaMock from '@mock/prisma.mock';
@@ -50,12 +51,28 @@ describe('AuthService', () => {
 		});
 
 		it('should throw an error if user already exists', async () => {
-			await expect(
-				service.createUser({
+			try {
+				await service.createUser({
 					email: 'homer@simpson.com',
 					password: 'password',
-				}),
-			).rejects.toThrowError('Email homer@simpson.com already used.');
+				});
+			} catch (error) {
+				expect(error).toBeInstanceOf(ConflictException);
+				expect(error.message).toBe('Email homer@simpson.com already used.');
+			}
+		});
+
+		it('should catch all other errors', async () => {
+			await expect(async () => {
+				await service
+					.createUser({
+						email: '',
+						password: '',
+					})
+					.catch((e) => {
+						throw e;
+					});
+			}).rejects.toThrow();
 		});
 	});
 
@@ -63,6 +80,18 @@ describe('AuthService', () => {
 		it('should return a token', async () => {
 			const token = await service.login('homer@simpson.com', 'password');
 			expect(token).toBeDefined();
+		});
+
+		it('should throw an error if user does not exist', async () => {
+			await expect(
+				service.login('marge@simpson.com', 'password'),
+			).rejects.toThrowError('No user found for email: ');
+		});
+
+		it('should throw an error if password is invalid', async () => {
+			await expect(
+				service.login('homer@simpson.com', 'wrong_password'),
+			).rejects.toThrowError('Invalid password');
 		});
 	});
 
@@ -119,6 +148,26 @@ describe('AuthService', () => {
 			expect(token).toHaveProperty('refreshToken');
 			expect(token.accessToken).toBeDefined();
 			expect(token.refreshToken).toBeDefined();
+		});
+	});
+
+	describe('refreshToken', () => {
+		it('should return a token', async () => {
+			const token = await service.login('homer@simpson.com', 'password');
+			const newToken = service.refreshToken(token.refreshToken);
+
+			expect(newToken).toBeDefined();
+			expect(newToken).toHaveProperty('accessToken');
+			expect(newToken).toHaveProperty('refreshToken');
+		});
+
+		it('should throw an error if token is invalid', async () => {
+			try {
+				service.refreshToken('invalid_token');
+			} catch (error) {
+				expect(error).toBeInstanceOf(UnauthorizedException);
+				expect(error.message).toBe('Unauthorized');
+			}
 		});
 	});
 });

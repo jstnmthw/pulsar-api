@@ -1,7 +1,6 @@
 // prisma.mock.ts
 
-import { User } from '@prisma/client';
-import { ConflictException } from '@nestjs/common';
+import { Prisma, User } from '@prisma/client';
 
 const prismaMock = {
 	user: {
@@ -32,8 +31,16 @@ const prismaMock = {
 		}),
 		create: jest.fn().mockImplementation((params) => {
 			if (params.data.email === 'homer@simpson.com') {
-				throw new ConflictException(`Email ${params.data.email} already used.`);
+				throw new Prisma.PrismaClientKnownRequestError(undefined, {
+					code: 'P2002',
+					clientVersion: '2.30.1',
+				});
 			}
+
+			if (params.data.email === '' || params.data.password === '') {
+				throw Error('email is empty');
+			}
+
 			return {
 				accessToken: 'accessToken',
 				refreshToken: 'refreshToken',
