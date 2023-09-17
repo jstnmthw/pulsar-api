@@ -108,11 +108,12 @@
   },
   "jest": {
     "testPathIgnorePatterns": [
-      "test/e2e"
+      "test/e2e",
+      "test/mocks"
     ],
     "coveragePathIgnorePatterns": [
       "test/e2e",
-        "test/mocks"
+      "test/mocks"
     ],
     "roots": [ 
       "<rootDir>/test"
@@ -131,7 +132,7 @@
       "^.+\\.(t|j)s$": "ts-jest"
     },
     "collectCoverageFrom": [
-      "**/*.(t|j)s"
+      "src/**/*.(t|j)s"
     ],
     "collectCoverage": true,
     "coverageDirectory": "<rootDir>/coverage",

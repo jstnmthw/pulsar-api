@@ -13,30 +13,30 @@ import { PrismaModule, loggingMiddleware } from 'nestjs-prisma';
 import config from './common/configs/config';
 
 @Module({
-	imports: [
-		ConfigModule.forRoot({ isGlobal: true, load: [config] }),
-		PrismaModule.forRoot({
-			isGlobal: true,
-			prismaServiceOptions: {
-				middlewares: [
-					loggingMiddleware({
-						logger: new Logger('PrismaMiddleware'),
-						logLevel: 'log',
-					}),
-				],
-			},
-		}),
+  imports: [
+    ConfigModule.forRoot({ isGlobal: true, load: [config] }),
+    PrismaModule.forRoot({
+      isGlobal: true,
+      prismaServiceOptions: {
+        middlewares: [
+          loggingMiddleware({
+            logger: new Logger('PrismaMiddleware'),
+            logLevel: 'log',
+          }),
+        ],
+      },
+    }),
 
-		GraphQLModule.forRootAsync<ApolloDriverConfig>({
-			driver: ApolloDriver,
-			useClass: GqlConfigService,
-		}),
+    GraphQLModule.forRootAsync<ApolloDriverConfig>({
+      driver: ApolloDriver,
+      useClass: GqlConfigService,
+    }),
 
-		AuthModule,
-		UsersModule,
-		PostsModule,
-	],
-	controllers: [AppController],
-	providers: [AppService, AppResolver],
+    AuthModule,
+    UsersModule,
+    PostsModule,
+  ],
+  controllers: [AppController],
+  providers: [AppService, AppResolver],
 })
 export class AppModule {}
