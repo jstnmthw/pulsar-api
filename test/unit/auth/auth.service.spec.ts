@@ -67,7 +67,7 @@ describe('AuthService', () => {
 				await service
 					.createUser({
 						email: '',
-						password: '',
+						password: 'password',
 					})
 					.catch((e) => {
 						throw e;
@@ -80,6 +80,8 @@ describe('AuthService', () => {
 		it('should return a token', async () => {
 			const token = await service.login('homer@simpson.com', 'password');
 			expect(token).toBeDefined();
+			expect(token).toHaveProperty('accessToken');
+			expect(token).toHaveProperty('refreshToken');
 		});
 
 		it('should throw an error if user does not exist', async () => {
@@ -103,7 +105,7 @@ describe('AuthService', () => {
 				id: '1',
 				email: 'homer@simpson.com',
 				password:
-					'$2b$10$deZ/BJ2JxadVqET1xEEN4ekTF3a0F4d3TrVRs2nPqvZZ6aOHjqK/W', //password
+					'$2b$10$deZ/BJ2JxadVqET1xEEN4ekTF3a0F4d3TrVRs2nPqvZZ6aOHjqK/W', // password
 				firstname: 'Homer',
 				lastname: 'Simpson',
 				createdAt: expect.any(Date),
@@ -115,30 +117,20 @@ describe('AuthService', () => {
 
 	describe('getUserFromToken', () => {
 		it('should return a user', async () => {
-			prismaMock.user.findUnique.mockResolvedValue({
-				id: 1,
-				email: 'test@example.com',
-				password: 'password',
-			});
-
 			const token = service.generateTokens({ userId: '1' });
 			const user = await service.getUserFromToken(token.accessToken);
 
 			expect(user).toBeDefined();
-			expect(user.id).toBe(1);
-			expect(user.email).toBe('test@example.com');
-			expect(user.password).toBe('password');
+			expect(user.id).toBe('1');
+			expect(user.email).toBe('homer@simpson.com');
+			expect(user.password).toBe(
+				'$2b$10$deZ/BJ2JxadVqET1xEEN4ekTF3a0F4d3TrVRs2nPqvZZ6aOHjqK/W',
+			);
 		});
 	});
 
 	describe('generateTokens', () => {
 		it('should return a token', async () => {
-			prismaMock.user.findUnique.mockResolvedValue({
-				id: 1,
-				email: 'test@example.com',
-				password: 'password',
-			});
-
 			const token = service.generateTokens({
 				userId: '1',
 			});
