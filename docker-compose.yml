@@ -1,4 +1,5 @@
 version: '3.8'
+
 services:
   nest-api:
     container_name: nest-api
@@ -8,21 +9,34 @@ services:
     ports:
       - '3000:3000'
     depends_on:
-      - postgres
+      - mysql
     env_file:
       - .env
 
-  postgres:
-    image: postgres:15
-    container_name: postgres
+#  postgres:
+#    image: postgres:15
+#    container_name: postgres
+#    restart: always
+#    ports:
+#      - '5432:5432'
+#    env_file:
+#      - .env
+#    volumes:
+#      - postgres:/var/lib/postgresql/data
+
+  mysql:
+    image: mysql:8.0.27
+    container_name: mysql
     restart: always
     ports:
-      - '5432:5432'
+      - '3306:3306'
     env_file:
       - .env
     volumes:
-      - postgres:/var/lib/postgresql/data
+      - mysql:/var/lib/mysql
 
 volumes:
-  postgres:
-    name: nest-db
+#  postgres:
+#    name: pulsar-db
+  mysql:
+    name: pulsar-db
