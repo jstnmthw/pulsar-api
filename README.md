@@ -20,9 +20,11 @@ This is a boilerplate starter-kit for building a GraphQL API with [NestJS](https
 - [Overview](#overview)
 - [Prisma Setup](#prisma-setup)
   - [1. Install Dependencies](#1-install-dependencies)
-  - [2. PostgreSQL with Docker](#2-PostgreSQL-with-docker)
-  - [3. Prisma: Migrate](#3-prisma-migrate)
-  - [4. Prisma: Client JS](#4-prisma-client-js)
+  - [2. Database with Docker](#2-database-with-docker)
+    - [MySQL](#mysql)
+    - [PostgreSQL](#postgresql)
+  - [3. Prisma Migrate](#3-prisma-migrate)
+  - [4. Prisma Client JS](#4-prisma-client-js)
   - [5. Seed the database data with this script](#5-seed-the-database-data-with-this-script)
   - [6. Start NestJS Server](#6-start-nestjs-server)
 - [GraphQL Playground](#graphql-playground)
@@ -67,7 +69,21 @@ npm install
 yarn install
 ```
 
-### 2. PostgreSQL with Docker
+### 2. Database with Docker
+
+#### MySQL
+
+Set up a development MySQL with Docker. Copy [.env.example](./.env.example) and rename to `.env` - `cp .env.example .env` - which sets the required environments for MySQL such as `MYSQL_USER`, `MYSQL_PASSWORD` and `MYSQL_DATABASE`. Update the variables as you wish and select a strong password.
+
+Start the MySQL database
+
+```bash
+docker-compose -f docker-compose.mysql.yml up -d
+# or
+npm run docker:db
+```
+
+#### PostgreSQL
 
 Set up a development PostgreSQL with Docker. Copy [.env.example](./.env.example) and rename to `.env` - `cp .env.example .env` - which sets the required environments for PostgreSQL such as `POSTGRES_USER`, `POSTGRES_PASSWORD` and `POSTGRES_DB`. Update the variables as you wish and select a strong password.
 
@@ -75,8 +91,6 @@ Start the PostgreSQL database
 
 ```bash
 docker-compose -f docker-compose.postgres.yml up -d
-# or
-npm run docker:db
 ```
 
 ### 3. Prisma Migrate
