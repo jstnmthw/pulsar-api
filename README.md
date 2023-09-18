@@ -21,7 +21,7 @@ This is a boilerplate starter-kit for building a GraphQL API with [NestJS](https
 - [Prisma Setup](#prisma-setup)
   - [1. Install Dependencies](#1-install-dependencies)
   - [2. PostgreSQL with Docker](#2-PostgreSQL-with-docker)
-  - [3. Prisma: Migrate](#3-prisma-prisma-migrate)
+  - [3. Prisma: Migrate](#3-prisma-migrate)
   - [4. Prisma: Client JS](#4-prisma-client-js)
   - [5. Seed the database data with this script](#5-seed-the-database-data-with-this-script)
   - [6. Start NestJS Server](#6-start-nestjs-server)
@@ -31,20 +31,19 @@ This is a boilerplate starter-kit for building a GraphQL API with [NestJS](https
 - [Schema Development](#schema-development)
 - [NestJS - Api Schema](#nestjs---api-schema)
   - [Resolver](#resolver)
-- [GraphQL Client](#graphql-client)
-  - [Front-end](#front-end) 
-    - [React](#react)
-      - [Setup](#setup)
-      - [Queries](#queries)
-      - [Mutations](#mutations)
-      - [Subscriptions](#subscriptions)
-      - [Authentication](#authentication) 
-    - [Angular](#angular)
-      - [Setup](#setup)
-      - [Queries](#queries)
-      - [Mutations](#mutations)
-      - [Subscriptions](#subscriptions)
-      - [Authentication](#authentication)
+- [Front-end](#front-end) 
+  - [React](#react)
+    - [Setup](#setup)
+    - [Queries](#queries)
+    - [Mutations](#mutations)
+    - [Subscriptions](#subscriptions)
+    - [Authentication](#authentication) 
+  - [Angular](#angular)
+    - [Setup](#setup)
+    - [Queries](#queries)
+    - [Mutations](#mutations)
+    - [Subscriptions](#subscriptions)
+    - [Authentication](#authentication)
 
 ## Prisma Setup
 
@@ -112,7 +111,7 @@ npx prisma migrate deploy
 npm run migrate:deploy
 ```
 
-### 4. Prisma: Prisma Client JS
+### 4. Prisma Client JS
 
 [Prisma Client JS](https://www.prisma.io/docs/reference/tools-and-interfaces/prisma-client/api) is a type-safe database client auto-generated based on the data model.
 
@@ -215,7 +214,7 @@ If `DATABASE_URL` is missing in the root `.env` file, which is loaded into the D
 
 ### Docker Compose
 
-You can also set up a the database and Nest application with the docker-compose
+You can also set up a database and Nest application with the docker-compose
 
 ```bash
 # building new NestJS docker image
@@ -265,17 +264,151 @@ Restart the NestJS server and this time the Query to fetch a `user` should work.
 
 **[back to top](#overview)**
 
-## GraphQL Client
+## Front-end
 
 A GraphQL client is necessary to consume the GraphQL api provided by the NestJS Server.
 
 Checkout [Apollo](https://www.apollographql.com/) a popular GraphQL client which offers several clients for React, Angular, Vue.js, Native iOS, Native Android and more.
 
-### Front-end
+### React
 
-#### Angular
+#### Setup
 
-##### Setup
+To start using [Apollo React](https://www.apollographql.com/docs/react/get-started/) simply run in a React project:
+
+```bash
+npm install @apollo/client graphql
+# or
+yarn add @apollo/client graphql
+```
+
+You can also add the `ApolloProvider` in the `App` component to make `Apollo` available in your React App.
+
+```tsx
+import { ApolloClient, InMemoryCache, ApolloProvider } from '@apollo/client';
+
+const client = new ApolloClient({
+  uri: 'http://localhost:3000/graphql',
+  cache: new InMemoryCache(),
+});
+  
+ReactDOM.render(
+  <ApolloProvider client={client}>
+    <App />
+  </ApolloProvider>,
+  document.getElementById('root')
+);
+```
+
+You need to set the URL to the NestJS GraphQL Api. Open the file `src/app/graphql.module.ts` and update `uri`:
+
+```tsx
+const uri = 'http://localhost:3000/graphql';
+```
+
+To use Apollo-React you can use the `useQuery` and `useMutation` hooks.
+
+**[back to top](#overview)**
+
+#### Queries
+
+To execute a query you can use:
+
+```tsx
+const { loading, error, data } = useQuery(YOUR_QUERY);
+```
+
+Here is an example how to fetch your profile from the NestJS GraphQL Api:
+
+```tsx
+const CurrentUserProfile = gql`
+  query CurrentUserProfile {
+    me {
+      id
+      email
+      name
+    }
+  }
+`;
+
+function Profile() {
+  const { loading, error, data } = useQuery(CurrentUserProfile);
+
+  if (loading) return <p>Loading...</p>;
+  if (error) return <p>Error :(</p>;
+
+  return (
+    <div>
+      <p>Me id: {data.me.id}</p>
+      <p>Me email: {data.me.email}</p>
+      <p>Me name: {data.me.name}</p>
+    </div>
+  );
+}
+```
+
+This will end up in an `GraphQL error` because `Me` is protected by an `@UseGuards(GqlAuthGuard)` and requires an `Bearer TOKEN`.
+
+Please refer to the [Authentication](#authentication) section.
+
+**[back to top](#overview)**
+
+#### Mutations
+
+To execute a mutation you can use:
+
+```ts
+const [login, { data }] = useMutation(YOUR_MUTATION);
+```
+
+Here is an example how to login into your profile using the `login` Mutation:
+
+```tsx
+const Login = gql`
+  mutation Login {
+    login(email: "homer@simpson.com", password: "duffbeer") {
+      token
+      user {
+        id
+        email
+        name
+      }
+    }
+  }
+`;
+
+function Signin() {
+  const [login, { data }] = useMutation(Login);
+
+  return (
+    <div>
+      <button
+        onClick={() => {
+          login();
+        }}
+      >
+        Login
+      </button>
+    </div>
+  );
+}
+```
+
+**[back to top](#overview)**
+
+#### Subscriptions
+
+To execute a subscription you can use:
+
+```ts
+const { loading, error, data } = useSubscription(YOUR_SUBSCRIPTION_QUERY);
+```
+
+**[back to top](#overview)**
+
+### Angular
+
+#### Setup
 
 To start using [Apollo Angular](https://www.apollographql.com/docs/angular/basics/setup.html) simply run in an Angular and Ionic project:
 
@@ -304,7 +437,7 @@ To use Apollo-Angular you can inject `private apollo: Apollo` into the construct
 
 **[back to top](#overview)**
 
-##### Queries
+#### Queries
 
 To execute a query you can use:
 
@@ -366,7 +499,7 @@ Please refer to the [Authentication](#authentication) section.
 
 **[back to top](#overview)**
 
-##### Mutations
+#### Mutations
 
 To execute a mutation you can use:
 
@@ -412,7 +545,7 @@ export class HomePage implements OnInit {
 
 **[back to top](#overview)**
 
-##### Subscriptions
+#### Subscriptions
 
 To execute a subscription you can use:
 
@@ -424,7 +557,7 @@ this.apollo.subscribe({
 
 **[back to top](#overview)**
 
-##### Authentication
+#### Authentication
 
 To authenticate your requests you have to add your `TOKEN` you receive on `signup` and `login` [mutation](#mutations) to each request which is protected by the `@UseGuards(GqlAuthGuard)`.
 
