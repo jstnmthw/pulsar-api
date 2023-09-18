@@ -7,7 +7,7 @@ This is a boilerplate starter-kit for building a GraphQL API with [NestJS](https
 
 
 ## Features
-- Roles and Permissions with
+- Roles and Permissions with [CASL](https://github.com/stalniy/casl).
 - GraphQL [playground](https://github.com/prisma/graphql-playground) behind authentication.
 - Code-First [decorators](https://docs.nestjs.com/graphql/quick-start#code-first) and [classes](https://docs.nestjs.com/graphql/quick-start#schema-first).
 - [Prisma](https://www.prisma.io/) for database modelling, migration and type-safe access (Postgres, MySQL & MongoDB).
