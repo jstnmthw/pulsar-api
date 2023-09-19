@@ -5,7 +5,6 @@ datasource db {
 
 generator client {
   provider = "prisma-client-js"
-  // previewFeatures = []
 }
 
 generator dbml {
@@ -13,17 +12,55 @@ generator dbml {
 }
 
 model User {
-  id        String   @id @default(cuid())
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-  email     String   @unique
+  id        String     @id @default(cuid())
+  createdAt DateTime   @default(now())
+  updatedAt DateTime   @updatedAt
+  email     String     @unique
   password  String
   firstname String?
   lastname  String?
-  role      Role
+  roles     UserRole[]
 }
 
-enum Role {
-  ADMIN
-  USER
+model UserRole {
+  id        Int      @id @default(autoincrement())
+  userId    String
+  user      User     @relation(fields: [userId], references: [id])
+  roleId    Int
+  role      Role     @relation(fields: [roleId], references: [id])
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model Role {
+  id             Int              @id @default(autoincrement())
+  name           String           @unique
+  createdAt      DateTime         @default(now())
+  updatedAt      DateTime         @updatedAt
+  UserRole       UserRole[]
+  PermissionRole PermissionRole[]
+}
+
+model Permission {
+  id             Int              @id @default(autoincrement())
+  action         ActionSubject
+  subject        String
+  condition      String?
+  PermissionRole PermissionRole[]
+}
+
+model PermissionRole {
+  id           Int        @id @default(autoincrement())
+  permissionId Int
+  permission   Permission @relation(fields: [permissionId], references: [id])
+  roleId       Int
+  role         Role       @relation(fields: [roleId], references: [id])
+}
+
+enum ActionSubject {
+  MANAGE
+  CREATE
+  READ
+  UPDATE
+  DELETE
 }

@@ -45,12 +45,6 @@ type Query {
   me: User!
 }
 
-"""User role"""
-enum Role {
-  ADMIN
-  USER
-}
-
 input SignupInput {
   email: String!
   firstname: String
@@ -78,7 +72,7 @@ type User {
   firstname: String
   id: ID!
   lastname: String
-  role: Role!
+  roles: String
 
   """Identifies the date and time when the object was last updated."""
   updatedAt: DateTime!

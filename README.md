@@ -270,11 +270,11 @@ To implement the new query, a new resolver function needs to be added to `users.
 ```ts
 @Query(returns => User)
 async getUser(@Args() args): Promise<User> {
-  return await this.prisma.client.user(args);
+  return await this.prisma.client.userSeeder(args);
 }
 ```
 
-Restart the NestJS server and this time the Query to fetch a `user` should work.
+Restart the NestJS server and this time the Query to fetch a `userSeeder` should work.
 
 **[back to top](#overview)**
 
@@ -382,7 +382,7 @@ const Login = gql`
   mutation Login {
     login(email: "homer@simpson.com", password: "duffbeer") {
       token
-      user {
+      userSeeder {
         id
         email
         name
@@ -530,7 +530,7 @@ const Login = gql`
   mutation Login {
     login(email: "test@example.com", password: "pizzaHawaii") {
       token
-      user {
+      userSeeder {
         id
         email
         name

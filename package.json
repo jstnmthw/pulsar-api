@@ -52,6 +52,8 @@
   },
   "dependencies": {
     "@apollo/server": "^4.7.5",
+    "@casl/ability": "^6.5.0",
+    "@casl/prisma": "^1.4.1",
     "@devoxa/prisma-relay-cursor-connection": "2.2.3",
     "@nestjs/apollo": "12.0.7",
     "@nestjs/common": "10.1.0",

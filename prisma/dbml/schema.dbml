@@ -10,10 +10,56 @@ Table User {
   password String [not null]
   firstname String
   lastname String
+  roles UserRole [not null]
+}
+
+Table UserRole {
+  id Int [pk, increment]
+  userId String [not null]
+  user User [not null]
+  roleId Int [not null]
+  role Role [not null]
+  createdAt DateTime [default: `now()`, not null]
+  updatedAt DateTime [not null]
+}
+
+Table Role {
+  id Int [pk, increment]
+  name String [unique, not null]
+  createdAt DateTime [default: `now()`, not null]
+  updatedAt DateTime [not null]
+  UserRole UserRole [not null]
+  PermissionRole PermissionRole [not null]
+}
+
+Table Permission {
+  id Int [pk, increment]
+  action ActionSubject [not null]
+  subject String [not null]
+  condition String
+  PermissionRole PermissionRole [not null]
+}
+
+Table PermissionRole {
+  id Int [pk, increment]
+  permissionId Int [not null]
+  permission Permission [not null]
+  roleId Int [not null]
   role Role [not null]
 }
 
-Enum Role {
-  ADMIN
-  USER
+Enum ActionSubject {
+  MANAGE
+  CREATE
+  READ
+  UPDATE
+  DELETE
 }
+
+Ref: UserRole.userId > User.id
+
+Ref: UserRole.roleId > Role.id
+
+Ref: PermissionRole.permissionId > Permission.id
+
+Ref: PermissionRole.roleId > Role.id

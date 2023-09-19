@@ -9,6 +9,7 @@ import { Logger, Module } from '@nestjs/common';
 import { GqlConfigService } from './gql-config.service';
 import { ApolloDriver, ApolloDriverConfig } from '@nestjs/apollo';
 import { PrismaModule, loggingMiddleware } from 'nestjs-prisma';
+import { CaslModule } from './casl/casl.module';
 import config from './common/configs/config';
 
 @Module({
@@ -33,6 +34,7 @@ import config from './common/configs/config';
 
     AuthModule,
     UsersModule,
+    CaslModule,
   ],
   controllers: [AppController],
   providers: [AppService, AppResolver],

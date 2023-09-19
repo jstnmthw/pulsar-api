@@ -1,32 +1,14 @@
 import { PrismaClient } from '@prisma/client';
+import { userSeeder } from './seeds/userSeeder';
+import { roleSeeder } from './seeds/roleSeeder';
+import { permissionSeeder } from './seeds/permissionSeeder';
 
 const prisma = new PrismaClient();
 
 async function main() {
-  await prisma.user.deleteMany();
-
-  console.log('Seeding...');
-
-  const user1 = await prisma.user.create({
-    data: {
-      email: 'lisa@simpson.com',
-      firstname: 'Lisa',
-      lastname: 'Simpson',
-      password: '$2b$10$EpRnTzVlqHNP0.fUbXUwSOyuiXe/QLSUG6xNekdHgTGmrpHEfIoxm', // secret42
-      role: 'USER',
-    },
-  });
-  const user2 = await prisma.user.create({
-    data: {
-      email: 'bart@simpson.com',
-      firstname: 'Bart',
-      lastname: 'Simpson',
-      role: 'ADMIN',
-      password: '$2b$10$EpRnTzVlqHNP0.fUbXUwSOyuiXe/QLSUG6xNekdHgTGmrpHEfIoxm', // secret42
-    },
-  });
-
-  console.log({ user1, user2 });
+  await userSeeder(prisma);
+  await roleSeeder(prisma);
+  await permissionSeeder(prisma);
 }
 
 main()
