@@ -13,48 +13,55 @@ generator dbml {
 
 model User {
   id        String     @id @default(cuid())
-  createdAt DateTime   @default(now())
-  updatedAt DateTime   @updatedAt
-  email     String     @unique
-  password  String
   firstname String?
   lastname  String?
-  roles     UserRole[]
-}
-
-model UserRole {
-  id        Int      @id @default(autoincrement())
-  userId    String
-  user      User     @relation(fields: [userId], references: [id])
-  roleId    Int
-  role      Role     @relation(fields: [roleId], references: [id])
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  email     String     @unique
+  password  String
+  createdAt DateTime   @default(now())
+  updatedAt DateTime   @updatedAt
+  deletedAt DateTime?
+  UserRole  UserRole[]
 }
 
 model Role {
   id             Int              @id @default(autoincrement())
   name           String           @unique
+  description    String?
   createdAt      DateTime         @default(now())
   updatedAt      DateTime         @updatedAt
+  deletedAt      DateTime?
   UserRole       UserRole[]
-  PermissionRole PermissionRole[]
+  RolePermission RolePermission[]
 }
 
 model Permission {
   id             Int              @id @default(autoincrement())
-  action         ActionSubject
+  description    String?
+  action         ActionSubject    @default(READ)
   subject        String
   condition      String?
-  PermissionRole PermissionRole[]
+  createdAt      DateTime         @default(now())
+  updatedAt      DateTime         @updatedAt
+  deletedAt      DateTime?
+  RolePermission RolePermission[]
 }
 
-model PermissionRole {
-  id           Int        @id @default(autoincrement())
-  permissionId Int
-  permission   Permission @relation(fields: [permissionId], references: [id])
+model UserRole {
+  userId String
+  roleId Int
+  user   User   @relation(fields: [userId], references: [id])
+  role   Role   @relation(fields: [roleId], references: [id])
+
+  @@unique([userId, roleId])
+}
+
+model RolePermission {
   roleId       Int
+  permissionId Int
   role         Role       @relation(fields: [roleId], references: [id])
+  permission   Permission @relation(fields: [permissionId], references: [id])
+
+  @@unique([roleId, permissionId])
 }
 
 enum ActionSubject {

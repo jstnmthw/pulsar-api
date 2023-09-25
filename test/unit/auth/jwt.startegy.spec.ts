@@ -47,7 +47,7 @@ describe('JwtStrategy', () => {
       password: 'password',
       firstname: 'Test',
       lastname: 'Example',
-      role: 'ADMIN',
+      deletedAt: null,
       createdAt: new Date(),
       updatedAt: new Date(),
     };

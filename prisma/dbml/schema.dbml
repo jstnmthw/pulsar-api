@@ -4,48 +4,59 @@
 
 Table User {
   id String [pk]
-  createdAt DateTime [default: `now()`, not null]
-  updatedAt DateTime [not null]
-  email String [unique, not null]
-  password String [not null]
   firstname String
   lastname String
-  roles UserRole [not null]
-}
-
-Table UserRole {
-  id Int [pk, increment]
-  userId String [not null]
-  user User [not null]
-  roleId Int [not null]
-  role Role [not null]
+  email String [unique, not null]
+  password String [not null]
   createdAt DateTime [default: `now()`, not null]
   updatedAt DateTime [not null]
+  deletedAt DateTime
+  UserRole UserRole [not null]
 }
 
 Table Role {
   id Int [pk, increment]
   name String [unique, not null]
+  description String
   createdAt DateTime [default: `now()`, not null]
   updatedAt DateTime [not null]
+  deletedAt DateTime
   UserRole UserRole [not null]
-  PermissionRole PermissionRole [not null]
+  RolePermission RolePermission [not null]
 }
 
 Table Permission {
   id Int [pk, increment]
-  action ActionSubject [not null]
+  description String
+  action ActionSubject [not null, default: 'READ']
   subject String [not null]
   condition String
-  PermissionRole PermissionRole [not null]
+  createdAt DateTime [default: `now()`, not null]
+  updatedAt DateTime [not null]
+  deletedAt DateTime
+  RolePermission RolePermission [not null]
 }
 
-Table PermissionRole {
-  id Int [pk, increment]
-  permissionId Int [not null]
-  permission Permission [not null]
+Table UserRole {
+  userId String [not null]
   roleId Int [not null]
+  user User [not null]
   role Role [not null]
+
+  indexes {
+    (userId, roleId) [unique]
+  }
+}
+
+Table RolePermission {
+  roleId Int [not null]
+  permissionId Int [not null]
+  role Role [not null]
+  permission Permission [not null]
+
+  indexes {
+    (roleId, permissionId) [unique]
+  }
 }
 
 Enum ActionSubject {
@@ -60,6 +71,6 @@ Ref: UserRole.userId > User.id
 
 Ref: UserRole.roleId > Role.id
 
-Ref: PermissionRole.permissionId > Permission.id
+Ref: RolePermission.roleId > Role.id
 
-Ref: PermissionRole.roleId > Role.id
+Ref: RolePermission.permissionId > Permission.id
