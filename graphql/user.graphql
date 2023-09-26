@@ -21,5 +21,4 @@ fragment UserData on User {
   email
   firstname
   lastname
-  role
 }

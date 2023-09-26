@@ -1,8 +1,10 @@
 import { Module } from '@nestjs/common';
+import { AuthzService } from '@/authz/authz.service';
+import { AuthzResolver } from '@/authz/authz.resolver';
 
 @Module({
   imports: [],
-  providers: [],
+  providers: [AuthzService, AuthzResolver],
   exports: [],
 })
-export class AuthZModule {}
+export class AuthzModule {}

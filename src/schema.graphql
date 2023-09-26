@@ -2,6 +2,11 @@
 # THIS FILE WAS AUTOMATICALLY GENERATED (DO NOT MODIFY)
 # ------------------------------------------------------
 
+input AddRoleToUserInput {
+  roleId: Int!
+  userId: String!
+}
+
 type Auth {
   """JWT access token"""
   accessToken: JWT!
@@ -9,6 +14,14 @@ type Auth {
   """JWT refresh token"""
   refreshToken: JWT!
   user: User!
+}
+
+type Authz {
+  """JWT access token"""
+  accessToken: JWT!
+
+  """JWT refresh token"""
+  refreshToken: JWT!
 }
 
 input ChangePasswordInput {
@@ -32,9 +45,11 @@ input LoginInput {
 }
 
 type Mutation {
+  addRoleToUser(data: AddRoleToUserInput!): Authz!
   changePassword(data: ChangePasswordInput!): User!
   login(data: LoginInput!): Auth!
   refreshToken(token: JWT!): Token!
+  removeRoleFromUser(data: AddRoleToUserInput!): Authz!
   signup(data: SignupInput!): Auth!
   updateUser(data: UpdateUserInput!): User!
 }

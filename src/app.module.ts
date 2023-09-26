@@ -11,6 +11,7 @@ import { ApolloDriver, ApolloDriverConfig } from '@nestjs/apollo';
 import { PrismaModule, loggingMiddleware } from 'nestjs-prisma';
 import { CaslModule } from './casl/casl.module';
 import config from './common/configs/config';
+import { AuthzModule } from '@/authz/authz.module';
 
 @Module({
   imports: [
@@ -33,6 +34,7 @@ import config from './common/configs/config';
     }),
 
     AuthModule,
+    AuthzModule,
     UsersModule,
     CaslModule,
   ],
