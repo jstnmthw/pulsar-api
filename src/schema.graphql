@@ -68,6 +68,9 @@ input UpdateUserInput {
 type User {
   """Identifies the date and time when the object was created."""
   createdAt: DateTime!
+
+  """Identifies the date and time when the object was deleted."""
+  deletedAt: DateTime!
   email: String!
   firstname: String
   id: ID!

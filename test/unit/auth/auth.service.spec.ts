@@ -1,10 +1,10 @@
 import { JwtService } from '@nestjs/jwt';
 import { PrismaService } from 'nestjs-prisma';
 import { ConfigService } from '@nestjs/config';
-import { AuthService } from '@/auth/auth.service';
+import { AuthService } from '@/authn/auth.service';
 import { ConflictException, UnauthorizedException } from '@nestjs/common';
 import { Test, TestingModule } from '@nestjs/testing';
-import { PasswordService } from '@/auth/password.service';
+import { PasswordService } from '@/authn/password.service';
 
 // Mocks
 import prismaMock from '@mock/prisma.mock';
@@ -160,6 +160,15 @@ describe('AuthService', () => {
         expect(error).toBeInstanceOf(UnauthorizedException);
         expect(error.message).toBe('Unauthorized');
       }
+    });
+  });
+
+  describe('addRole', () => {
+    it('should add a role to a user', async () => {
+      const user = await service.addRole({ userId: '1', roleId: 1 });
+      expect(user).toBeDefined();
+      expect(user).toHaveProperty('role');
+      // expect(user.roles).toBe('ADMIN');
     });
   });
 });

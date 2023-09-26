@@ -13,4 +13,8 @@ export abstract class BaseModel {
       'Identifies the date and time when the object was last updated.',
   })
   updatedAt: Date;
+  @Field({
+    description: 'Identifies the date and time when the object was deleted.',
+  })
+  deletedAt?: Date;
 }

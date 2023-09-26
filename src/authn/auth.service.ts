@@ -1,19 +1,19 @@
 import {
   Injectable,
+  ConflictException,
   NotFoundException,
   BadRequestException,
-  ConflictException,
   UnauthorizedException,
 } from '@nestjs/common';
+import { Token } from '@/common/models/token.model';
 import { JwtService } from '@nestjs/jwt';
-import { Token } from './models/token.model';
-import { PrismaService } from 'nestjs-prisma';
-import { Prisma, User } from '@prisma/client';
-import { ConfigService } from '@nestjs/config';
 import { SignupInput } from './dto/signup.input';
-import { PasswordService } from './password.service';
-import { JwtSignModel } from '@/auth/models/jwt-sign.model';
+import { JwtSignModel } from '@/authn/models/jwt-sign.model';
+import { Prisma, User } from '@prisma/client';
+import { PrismaService } from 'nestjs-prisma';
+import { ConfigService } from '@nestjs/config';
 import { SecurityConfig } from '@/common/configs/config.interface';
+import { PasswordService } from './password.service';
 
 @Injectable()
 export class AuthService {

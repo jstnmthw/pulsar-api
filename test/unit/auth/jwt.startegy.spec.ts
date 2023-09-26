@@ -1,7 +1,7 @@
 import { User } from '@prisma/client';
-import { JwtDto } from '@/auth/dto/jwt.dto';
-import { JwtStrategy } from '@/auth/jwt.strategy';
-import { AuthService } from '@/auth/auth.service';
+import { JwtDto } from '@/authn/dto/jwt.dto';
+import { JwtStrategy } from '@/authn/jwt.strategy';
+import { AuthService } from '@/authn/auth.service';
 import { ConfigService } from '@nestjs/config';
 import { Test, TestingModule } from '@nestjs/testing';
 import configMock from '@mock/config.mock';
