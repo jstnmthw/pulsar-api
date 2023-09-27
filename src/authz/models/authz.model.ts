@@ -1,8 +1,10 @@
-import { ObjectType } from '@nestjs/graphql';
-import { User } from '@/users/models/user.model';
-import { Token } from '@/common/models/token.model';
+import { Field, ObjectType } from '@nestjs/graphql';
 
 @ObjectType()
-export class Authz extends Token {
-  user: User;
+export class Authz {
+  @Field(() => Boolean, { description: 'Returns true on success' })
+  success: boolean;
+
+  @Field(() => String, { description: 'Provides error message' })
+  errorMessage: string;
 }

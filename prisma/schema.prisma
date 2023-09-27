@@ -12,56 +12,38 @@ generator dbml {
 }
 
 model User {
-  id        String     @id @default(cuid())
+  id        String    @id @default(cuid())
   firstname String?
   lastname  String?
-  email     String     @unique
+  email     String    @unique
   password  String
-  createdAt DateTime   @default(now())
-  updatedAt DateTime   @updatedAt
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
   deletedAt DateTime?
-  UserRole  UserRole[]
+  roles     Role[]
 }
 
 model Role {
-  id             Int              @id @default(autoincrement())
-  name           String           @unique
-  description    String?
-  createdAt      DateTime         @default(now())
-  updatedAt      DateTime         @updatedAt
-  deletedAt      DateTime?
-  UserRole       UserRole[]
-  RolePermission RolePermission[]
+  id          Int          @id @default(autoincrement())
+  name        String       @unique
+  description String?
+  createdAt   DateTime     @default(now())
+  updatedAt   DateTime     @updatedAt
+  deletedAt   DateTime?
+  permissions Permission[]
+  users       User[]
 }
 
 model Permission {
-  id             Int              @id @default(autoincrement())
-  description    String?
-  action         ActionSubject    @default(READ)
-  subject        String
-  condition      String?
-  createdAt      DateTime         @default(now())
-  updatedAt      DateTime         @updatedAt
-  deletedAt      DateTime?
-  RolePermission RolePermission[]
-}
-
-model UserRole {
-  userId String
-  roleId Int
-  user   User   @relation(fields: [userId], references: [id])
-  role   Role   @relation(fields: [roleId], references: [id])
-
-  @@unique([userId, roleId])
-}
-
-model RolePermission {
-  roleId       Int
-  permissionId Int
-  role         Role       @relation(fields: [roleId], references: [id])
-  permission   Permission @relation(fields: [permissionId], references: [id])
-
-  @@unique([roleId, permissionId])
+  id          Int           @id @default(autoincrement())
+  description String?
+  action      ActionSubject @default(READ)
+  subject     String
+  condition   String?
+  createdAt   DateTime      @default(now())
+  updatedAt   DateTime      @updatedAt
+  deletedAt   DateTime?
+  roles       Role[]
 }
 
 enum ActionSubject {

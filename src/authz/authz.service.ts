@@ -15,11 +15,18 @@ export class AuthzService {
 
   async addRoleToUser(payload: AddRoleToUserInput): Promise<boolean> {
     let env = this.configService.get<string>('NODE_ENV');
+    console.log('####################');
+    console.log(payload);
+    console.log('####################');
     try {
-      await this.prisma.userRole.create({
+      await this.prisma.user.update({
+        where: { id: payload.userId },
         data: {
-          userId: payload.userId,
-          roleId: payload.roleId,
+          roles: {
+            connect: {
+              id: payload.roleId,
+            },
+          },
         },
       });
       return true;
@@ -34,11 +41,13 @@ export class AuthzService {
   async removeRoleFromUser(payload: RemoveRoleFromUserInput): Promise<boolean> {
     let env = this.configService.get<string>('NODE_ENV');
     try {
-      await this.prisma.userRole.delete({
-        where: {
-          userId_roleId: {
-            userId: payload.userId,
-            roleId: payload.roleId,
+      await this.prisma.user.update({
+        where: { id: payload.userId },
+        data: {
+          roles: {
+            disconnect: {
+              id: payload.roleId,
+            },
           },
         },
       });

@@ -162,13 +162,4 @@ describe('AuthService', () => {
       }
     });
   });
-
-  describe('addRole', () => {
-    it('should add a role to a user', async () => {
-      const user = await service.addRole({ userId: '1', roleId: 1 });
-      expect(user).toBeDefined();
-      expect(user).toHaveProperty('role');
-      // expect(user.roles).toBe('ADMIN');
-    });
-  });
 });

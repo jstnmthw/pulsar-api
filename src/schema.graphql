@@ -17,11 +17,11 @@ type Auth {
 }
 
 type Authz {
-  """JWT access token"""
-  accessToken: JWT!
+  """Provides error message"""
+  errorMessage: String!
 
-  """JWT refresh token"""
-  refreshToken: JWT!
+  """Returns true on success"""
+  success: Boolean!
 }
 
 input ChangePasswordInput {
