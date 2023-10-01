@@ -44,6 +44,8 @@ model Permission {
   updatedAt   DateTime         @updatedAt
   deletedAt   DateTime?
   roles       Role[]
+
+  @@unique([action, subject])
 }
 
 enum PermissionAction {

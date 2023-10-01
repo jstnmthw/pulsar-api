@@ -35,6 +35,10 @@ Table Permission {
   updatedAt DateTime [not null]
   deletedAt DateTime
   roles Role [not null]
+
+  indexes {
+    (action, subject) [unique]
+  }
 }
 
 Table RoleToUser {

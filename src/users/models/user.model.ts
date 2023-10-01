@@ -2,6 +2,7 @@ import 'reflect-metadata';
 import { ObjectType, HideField, Field } from '@nestjs/graphql';
 import { IsEmail } from 'class-validator';
 import { BaseModel } from '@/common/models/base.model';
+import { Role } from '@/authz/models/role.model';
 
 @ObjectType()
 export class User extends BaseModel {
@@ -18,6 +19,6 @@ export class User extends BaseModel {
   @HideField()
   password: string;
 
-  @Field(() => String, { nullable: true })
-  roles?: string[];
+  @Field(() => Role, { nullable: true })
+  roles?: Role[];
 }

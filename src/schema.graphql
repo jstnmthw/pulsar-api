@@ -54,10 +54,42 @@ type Mutation {
   updateUser(data: UpdateUserInput!): User!
 }
 
+type Permission {
+  action: String!
+  condition: String!
+
+  """Identifies the date and time when the object was created."""
+  createdAt: DateTime!
+
+  """Identifies the date and time when the object was deleted."""
+  deletedAt: DateTime!
+  description: String!
+  id: ID!
+  subject: String!
+
+  """Identifies the date and time when the object was last updated."""
+  updatedAt: DateTime!
+}
+
 type Query {
   hello(name: String!): String!
   helloWorld: String!
   me: User!
+}
+
+type Role {
+  """Identifies the date and time when the object was created."""
+  createdAt: DateTime!
+
+  """Identifies the date and time when the object was deleted."""
+  deletedAt: DateTime!
+  description: String!
+  id: ID!
+  name: String!
+  permissions: [Permission!]
+
+  """Identifies the date and time when the object was last updated."""
+  updatedAt: DateTime!
 }
 
 input SignupInput {
@@ -90,7 +122,7 @@ type User {
   firstname: String
   id: ID!
   lastname: String
-  roles: String
+  roles: Role
 
   """Identifies the date and time when the object was last updated."""
   updatedAt: DateTime!
