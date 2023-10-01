@@ -14,7 +14,7 @@ export class GqlConfigService implements GqlOptionsFactory {
   constructor(private configService: ConfigService) {}
 
   createGqlOptions(): ApolloDriverConfig {
-    let env = this.configService.get<string>('NODE_ENV');
+    const env = this.configService.get<string>('NODE_ENV');
     let plugins: ApolloServerPlugin<BaseContext>[];
 
     if (env === 'production') {

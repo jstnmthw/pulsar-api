@@ -6,6 +6,9 @@ import { Role } from '@/authz/models/role.model';
 
 @ObjectType()
 export class User extends BaseModel {
+  @Field(() => String, { nullable: true })
+  id?: string;
+
   @Field()
   @IsEmail()
   email: string;

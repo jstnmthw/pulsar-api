@@ -3,15 +3,18 @@ import { BaseModel } from '@/common/models/base.model';
 
 @ObjectType()
 export class Permission extends BaseModel {
-  @Field()
+  @Field(() => Number, { description: 'ID of permission' })
+  id: number;
+
+  @Field(() => String, { description: 'Action for permission' })
   action: string;
 
-  @Field()
+  @Field(() => String, { description: 'Subject for permission' })
   subject: string;
 
-  @Field()
+  @Field(() => String, { description: 'Condition of permission' })
   condition: string;
 
-  @Field()
+  @Field(() => String, { description: 'Description of permission' })
   description: string;
 }

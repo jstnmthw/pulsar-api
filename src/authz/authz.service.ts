@@ -14,7 +14,7 @@ export class AuthzService {
   ) {}
 
   async addRoleToUser(payload: AddRoleToUserInput): Promise<boolean> {
-    let env = this.configService.get<string>('NODE_ENV');
+    const env = this.configService.get<string>('NODE_ENV');
     try {
       await this.prisma.user.update({
         where: { id: payload.userId },
@@ -36,7 +36,7 @@ export class AuthzService {
   }
 
   async removeRoleFromUser(payload: RemoveRoleFromUserInput): Promise<boolean> {
-    let env = this.configService.get<string>('NODE_ENV');
+    const env = this.configService.get<string>('NODE_ENV');
     try {
       await this.prisma.user.update({
         where: { id: payload.userId },

@@ -55,7 +55,10 @@ type Mutation {
 }
 
 type Permission {
+  """Action for permission"""
   action: String!
+
+  """Condition of permission"""
   condition: String!
 
   """Identifies the date and time when the object was created."""
@@ -63,8 +66,14 @@ type Permission {
 
   """Identifies the date and time when the object was deleted."""
   deletedAt: DateTime!
+
+  """Description of permission"""
   description: String!
-  id: ID!
+
+  """ID of permission"""
+  id: Int!
+
+  """Subject for permission"""
   subject: String!
 
   """Identifies the date and time when the object was last updated."""
@@ -83,8 +92,14 @@ type Role {
 
   """Identifies the date and time when the object was deleted."""
   deletedAt: DateTime!
+
+  """Description of role"""
   description: String!
-  id: ID!
+
+  """ID of role"""
+  id: Int!
+
+  """Name of role"""
   name: String!
   permissions: [Permission!]
 
@@ -120,7 +135,7 @@ type User {
   deletedAt: DateTime!
   email: String!
   firstname: String
-  id: ID!
+  id: String
   lastname: String
   roles: Role
 
