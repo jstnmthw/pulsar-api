@@ -14,6 +14,11 @@ export async function userSeeder(prisma: PrismaClient) {
       lastname: 'Simpson',
       password: '$2b$10$EpRnTzVlqHNP0.fUbXUwSOyuiXe/QLSUG6xNekdHgTGmrpHEfIoxm', // secret42
       createdAt: new Date(),
+      roles: {
+        connect: {
+          name: 'Admin',
+        },
+      },
     },
     {
       email: 'bart@simpson.com',
@@ -21,6 +26,11 @@ export async function userSeeder(prisma: PrismaClient) {
       lastname: 'Simpson',
       password: '$2b$10$EpRnTzVlqHNP0.fUbXUwSOyuiXe/QLSUG6xNekdHgTGmrpHEfIoxm', // secret42
       createdAt: new Date(),
+      roles: {
+        connect: {
+          name: 'User',
+        },
+      },
     },
   ];
 

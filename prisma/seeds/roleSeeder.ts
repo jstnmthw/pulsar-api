@@ -1,5 +1,4 @@
 import { Prisma, PrismaClient } from '@prisma/client';
-import { Action } from './permissionSeeder';
 
 export async function roleSeeder(prisma: PrismaClient) {
   await prisma.role.deleteMany();
@@ -15,8 +14,28 @@ export async function roleSeeder(prisma: PrismaClient) {
       permissions: {
         create: [
           {
+            action: Action.Create,
+            subject: 'User',
+            createdAt: new Date(),
+            description: 'Create user',
+          },
+          {
             action: Action.Read,
             subject: 'User',
+            createdAt: new Date(),
+            description: 'Read user',
+          },
+          {
+            action: Action.Update,
+            subject: 'User',
+            createdAt: new Date(),
+            description: 'Update user',
+          },
+          {
+            action: Action.Delete,
+            subject: 'User',
+            createdAt: new Date(),
+            description: 'Delete user',
           },
         ],
       },
@@ -29,7 +48,9 @@ export async function roleSeeder(prisma: PrismaClient) {
         create: [
           {
             action: Action.Manage,
-            subject: 'all',
+            subject: 'Admin',
+            createdAt: new Date(),
+            description: 'Manage role',
           },
         ],
       },
@@ -46,4 +67,12 @@ export async function roleSeeder(prisma: PrismaClient) {
   }
 
   console.log('Done.');
+}
+
+export enum Action {
+  Manage = 'MANAGE',
+  Create = 'CREATE',
+  Read = 'READ',
+  Update = 'UPDATE',
+  Delete = 'DELETE',
 }

@@ -35,18 +35,18 @@ model Role {
 }
 
 model Permission {
-  id          Int           @id @default(autoincrement())
+  id          Int              @id @default(autoincrement())
   description String?
-  action      ActionSubject @default(READ)
+  action      PermissionAction @default(READ)
   subject     String
   condition   String?
-  createdAt   DateTime      @default(now())
-  updatedAt   DateTime      @updatedAt
+  createdAt   DateTime         @default(now())
+  updatedAt   DateTime         @updatedAt
   deletedAt   DateTime?
   roles       Role[]
 }
 
-enum ActionSubject {
+enum PermissionAction {
   MANAGE
   CREATE
   READ

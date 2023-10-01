@@ -28,7 +28,7 @@ Table Role {
 Table Permission {
   id Int [pk, increment]
   description String
-  action ActionSubject [not null, default: 'READ']
+  action PermissionAction [not null, default: 'READ']
   subject String [not null]
   condition String
   createdAt DateTime [default: `now()`, not null]
@@ -47,7 +47,7 @@ Table PermissionToRole {
   rolesId Int [ref: > Role.id]
 }
 
-Enum ActionSubject {
+Enum PermissionAction {
   MANAGE
   CREATE
   READ

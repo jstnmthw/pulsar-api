@@ -6,7 +6,7 @@ import { permissionSeeder } from './seeds/permissionSeeder';
 const prisma = new PrismaClient();
 
 async function main() {
-  await permissionSeeder(prisma);
+  // await permissionSeeder(prisma);
   await roleSeeder(prisma);
   await userSeeder(prisma);
 }

@@ -15,9 +15,6 @@ export class AuthzService {
 
   async addRoleToUser(payload: AddRoleToUserInput): Promise<boolean> {
     let env = this.configService.get<string>('NODE_ENV');
-    console.log('####################');
-    console.log(payload);
-    console.log('####################');
     try {
       await this.prisma.user.update({
         where: { id: payload.userId },
