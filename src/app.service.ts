@@ -1,5 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
+import { Field, ObjectType } from '@nestjs/graphql';
 
 @Injectable()
 export class AppService {
@@ -15,8 +16,14 @@ export class AppService {
   }
 }
 
-export type Info = {
+@ObjectType()
+export class Info {
+  @Field(() => String, { nullable: true, description: 'App name' })
   name: string;
+
+  @Field(() => String, { nullable: true, description: 'App version' })
   version: string;
+
+  @Field(() => String, { nullable: true, description: 'App endpoint' })
   endpoint: string;
-};
+}

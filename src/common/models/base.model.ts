@@ -3,18 +3,17 @@ import { Field, ObjectType } from '@nestjs/graphql';
 @ObjectType({ isAbstract: true })
 export abstract class BaseModel {
   @Field({
-    description: 'Identifies the date and time when the object was created.',
+    description: 'Date and time model created.',
   })
   createdAt: Date;
 
   @Field({
-    description:
-      'Identifies the date and time when the object was last updated.',
+    description: 'Date and time last model updated.',
   })
   updatedAt: Date;
 
   @Field({
-    description: 'Identifies the date and time when the object was deleted.',
+    description: 'Date and time model deleted.',
   })
   deletedAt?: Date;
 }

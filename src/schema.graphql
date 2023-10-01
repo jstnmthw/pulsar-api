@@ -34,6 +34,17 @@ A date-time string at UTC, such as 2019-12-03T09:54:33Z, compliant with the date
 """
 scalar DateTime
 
+type Info {
+  """App endpoint"""
+  endpoint: String
+
+  """App name"""
+  name: String
+
+  """App version"""
+  version: String
+}
+
 """
 A field whose value is a JSON Web Token (JWT): https://jwt.io/introduction.
 """
@@ -61,10 +72,10 @@ type Permission {
   """Condition of permission"""
   condition: String!
 
-  """Identifies the date and time when the object was created."""
+  """Date and time model created."""
   createdAt: DateTime!
 
-  """Identifies the date and time when the object was deleted."""
+  """Date and time model deleted."""
   deletedAt: DateTime!
 
   """Description of permission"""
@@ -76,21 +87,20 @@ type Permission {
   """Subject for permission"""
   subject: String!
 
-  """Identifies the date and time when the object was last updated."""
+  """Date and time last model updated."""
   updatedAt: DateTime!
 }
 
 type Query {
-  hello(name: String!): String!
-  helloWorld: String!
+  info: Info!
   me: User!
 }
 
 type Role {
-  """Identifies the date and time when the object was created."""
+  """Date and time model created."""
   createdAt: DateTime!
 
-  """Identifies the date and time when the object was deleted."""
+  """Date and time model deleted."""
   deletedAt: DateTime!
 
   """Description of role"""
@@ -103,7 +113,7 @@ type Role {
   name: String!
   permissions: [Permission!]
 
-  """Identifies the date and time when the object was last updated."""
+  """Date and time last model updated."""
   updatedAt: DateTime!
 }
 
@@ -128,17 +138,30 @@ input UpdateUserInput {
 }
 
 type User {
-  """Identifies the date and time when the object was created."""
+  """Date and time model created."""
   createdAt: DateTime!
 
-  """Identifies the date and time when the object was deleted."""
+  """Date and time model deleted."""
   deletedAt: DateTime!
-  email: String!
+
+  """User model email"""
+  email: String
+
+  """User model first name"""
   firstname: String
+
+  """User model id"""
   id: String
+
+  """User model last name"""
   lastname: String
+
+  """User model password"""
+  password: String
+
+  """User model roles"""
   roles: Role
 
-  """Identifies the date and time when the object was last updated."""
+  """Date and time last model updated."""
   updatedAt: DateTime!
 }
