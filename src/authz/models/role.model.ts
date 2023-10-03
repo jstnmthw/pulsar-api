@@ -13,6 +13,9 @@ export class Role extends BaseModel {
   @Field(() => String, { description: 'Description of role' })
   description: string;
 
-  @Field(() => [Permission], { nullable: true })
+  @Field(() => [Permission], {
+    nullable: true,
+    description: 'Permissions of role',
+  })
   permissions: Permission[];
 }

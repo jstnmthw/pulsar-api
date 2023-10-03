@@ -13,7 +13,9 @@ export class UsersResolver {
   constructor(private usersService: UsersService) {}
 
   @Query(() => User)
-  async me(@UserEntity() user: User): Promise<User> {
+  async me(
+    @UserEntity({ include: { roles: true } }) user: User,
+  ): Promise<User> {
     return user;
   }
 
