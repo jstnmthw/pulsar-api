@@ -1,4 +1,4 @@
-import { ValidationPipe } from '@nestjs/common';
+import { Logger, ValidationPipe } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { HttpAdapterHost, NestFactory } from '@nestjs/core';
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
@@ -9,6 +9,8 @@ import type {
   NestConfig,
   SwaggerConfig,
 } from './common/configs/config.interface';
+import { AppService } from '@/app.service';
+import * as process from 'process';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
@@ -45,6 +47,19 @@ async function bootstrap() {
     app.enableCors();
   }
 
-  await app.listen(process.env.PORT || nestConfig.port || 3000);
+  await app.listen(nestConfig.port || 3000);
 }
-bootstrap();
+bootstrap().then(() => {
+  const logger = new Logger(AppService.name);
+
+  printHorizontalLine(logger);
+  logger.log(
+    `Server is running at ${process.env.BASE_URL}${process.env.PORT} 🚀`,
+  );
+  printHorizontalLine(logger);
+});
+
+function printHorizontalLine(logger: Logger): void {
+  const line = '-'.repeat(45); // Adjust the number of dashes as needed
+  logger.log(line);
+}
