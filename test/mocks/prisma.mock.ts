@@ -45,6 +45,18 @@ const prismaMock = {
         refreshToken: 'refreshToken',
       };
     }),
+    update: jest.fn().mockImplementation((params) => {
+      if (params.where.id === '1') {
+        return {
+          id: '1',
+          email: 'lisa@simpson.com',
+          firstname: 'Lisa',
+          lastname: 'Simpson',
+          createdAt: new Date(),
+          updatedAt: new Date(),
+        } as User;
+      }
+    }),
   },
 };
 

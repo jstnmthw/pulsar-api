@@ -6,23 +6,23 @@ import { Role } from '@/authz/models/role.model';
 
 @ObjectType()
 export class User extends BaseModel {
-  @Field(() => String, { nullable: true, description: 'User model id' })
+  @Field(() => String, { description: 'User model id' })
   id?: string;
 
-  @Field(() => String, { nullable: true, description: 'User model email' })
+  @Field(() => String, { description: 'User model email' })
   @IsEmail()
   email: string;
 
-  @Field(() => String, { nullable: true, description: 'User model first name' })
+  @Field(() => String, { description: 'User model first name', nullable: true })
   firstname?: string;
 
-  @Field(() => String, { nullable: true, description: 'User model last name' })
+  @Field(() => String, { description: 'User model last name', nullable: true })
   lastname?: string;
 
-  @Field(() => String, { nullable: true, description: 'User model password' })
+  @Field(() => String, { description: 'User model password' })
   @HideField()
   password: string;
 
-  @Field(() => Role, { nullable: true, description: 'User model roles' })
+  @Field(() => [Role], { description: 'User model roles', nullable: true })
   roles?: Role[];
 }

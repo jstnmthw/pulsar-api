@@ -14,6 +14,7 @@ export abstract class BaseModel {
 
   @Field({
     description: 'Date and time model deleted.',
+    nullable: true,
   })
   deletedAt?: Date;
 }

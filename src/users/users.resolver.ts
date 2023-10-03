@@ -20,7 +20,11 @@ export class UsersResolver {
   async me(@UserEntity() user: User): Promise<User> {
     return this.prisma.user.findUnique({
       where: { id: user.id },
-      include: { roles: true },
+      include: {
+        roles: {
+          include: { permissions: true },
+        },
+      },
     });
   }
 
