@@ -65,32 +65,6 @@ type Mutation {
   updateUser(data: UpdateUserInput!): User!
 }
 
-type Permission {
-  """Action for permission"""
-  action: String!
-
-  """Condition of permission"""
-  condition: String!
-
-  """Date and time model created."""
-  createdAt: DateTime!
-
-  """Date and time model deleted."""
-  deletedAt: DateTime!
-
-  """Description of permission"""
-  description: String!
-
-  """ID of permission"""
-  id: Int!
-
-  """Subject for permission"""
-  subject: String!
-
-  """Date and time last model updated."""
-  updatedAt: DateTime!
-}
-
 type Query {
   info: Info!
   me: User!
@@ -111,9 +85,6 @@ type Role {
 
   """Name of role"""
   name: String!
-
-  """Permissions of role"""
-  permissions: [Permission!]
 
   """Date and time last model updated."""
   updatedAt: DateTime!

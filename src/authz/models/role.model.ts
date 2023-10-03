@@ -1,6 +1,5 @@
 import { Field, ObjectType } from '@nestjs/graphql';
 import { BaseModel } from '@/common/models/base.model';
-import { Permission } from '@/authz/models/permission.model';
 
 @ObjectType()
 export class Role extends BaseModel {
@@ -12,10 +11,4 @@ export class Role extends BaseModel {
 
   @Field(() => String, { description: 'Description of role' })
   description: string;
-
-  @Field(() => [Permission], {
-    nullable: true,
-    description: 'Permissions of role',
-  })
-  permissions: Permission[];
 }
