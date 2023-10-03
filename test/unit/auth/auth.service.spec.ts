@@ -110,7 +110,6 @@ describe('AuthService', () => {
         lastname: 'Simpson',
         createdAt: expect.any(Date),
         updatedAt: expect.any(Date),
-        role: 'USER',
       });
     });
   });

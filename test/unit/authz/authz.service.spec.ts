@@ -39,10 +39,14 @@ describe('AuthzService', () => {
   describe('addRoleToUser', () => {
     it('should add a role to a user', async () => {
       const user = await service.addRoleToUser({ userId: '1', roleId: 1 });
-      expect(user).toEqual({
-        success: true,
-        errorMessages: null,
-      });
+      expect(user).toEqual(true);
+    });
+  });
+
+  describe('removeRoleFromUser', () => {
+    it('should remove a role from a user', async () => {
+      const user = await service.removeRoleFromUser({ userId: '1', roleId: 1 });
+      expect(user).toEqual(true);
     });
   });
 });
