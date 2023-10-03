@@ -54,7 +54,7 @@ bootstrap().then(() => {
 
   printHorizontalLine(logger);
   logger.log(
-    `Server is running at ${process.env.BASE_URL}${process.env.PORT} 🚀`,
+    `Server is running at ${process.env.BASE_URL}:${process.env.PORT} 🚀`,
   );
   printHorizontalLine(logger);
 });
