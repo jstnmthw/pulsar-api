@@ -1,6 +1,10 @@
-import { User } from '@prisma/client';
-import { PureAbility, AbilityBuilder } from '@casl/ability';
+import { PrismaClient, User } from '@prisma/client';
+import { AbilityBuilder, PureAbility } from '@casl/ability';
 import { createPrismaAbility, PrismaQuery, Subjects } from '@casl/prisma';
+
+const prisma = new PrismaClient();
+
+type ResourceType = 'User' | 'Post';
 
 type AppAbility = PureAbility<
   [
@@ -11,13 +15,31 @@ type AppAbility = PureAbility<
   ],
   PrismaQuery
 >;
-const { can, cannot, build } = new AbilityBuilder<AppAbility>(
-  createPrismaAbility,
-);
 
-can('read', 'User', { id: '1' });
-cannot('read', 'User', { id: '2' });
+async function fetchPermissions(userId: string) {
+  const rolePermissions = prisma.role.findMany({
+    where: { users: { some: { id: userId } } },
+    include: { permissions: true },
+  });
 
-const ability = build();
-ability.can('read', 'User');
-ability.cannot('read', 'User');
+  return (await rolePermissions).flatMap((role) => role.permissions);
+}
+
+export async function buildAbilities(userId: string): Promise<AppAbility> {
+  const permissions = await fetchPermissions(userId);
+  const { can, build } = new AbilityBuilder<AppAbility>(createPrismaAbility);
+
+  permissions.forEach((permission) => {
+    const subjectType = permission.subject.toLowerCase() as ResourceType;
+    if (Object.keys(can).includes(subjectType)) {
+      can(permission.action, 'User', permission.condition);
+    } else {
+      throw new Error('Invalid subject type');
+    }
+  });
+  return build();
+}
+
+export async function createAbilityForUser(userId: string) {
+  return await buildAbilities(userId);
+}

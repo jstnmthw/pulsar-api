@@ -15,7 +15,6 @@ const prismaMock = {
           lastname: 'Simpson',
           createdAt: new Date(),
           updatedAt: new Date(),
-          role: 'USER',
         } as User,
       };
 

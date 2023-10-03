@@ -1,31 +1,28 @@
-import { Chance } from 'chance';
 import { AppResolver } from '@/app.resolver';
 import { AppService } from '@/app.service';
 import { Test, TestingModule } from '@nestjs/testing';
-
-const chance = new Chance();
+import { ConfigService } from '@nestjs/config';
 
 describe('AppResolver', () => {
   let appResolver: AppResolver;
 
   beforeEach(async () => {
     const app: TestingModule = await Test.createTestingModule({
-      providers: [AppResolver, AppService],
+      providers: [AppResolver, AppService, ConfigService],
     }).compile();
 
     appResolver = app.get<AppResolver>(AppResolver);
   });
 
-  describe('helloWorld', () => {
-    it('should return "Hello World!"', () => {
-      expect(appResolver.helloWorld()).toBe('Hello World!');
-    });
-  });
-
-  describe('hello', () => {
-    it('should return "Hello ${name}!"', () => {
-      const name = chance.name();
-      expect(appResolver.hello(name)).toBe(`Hello ${name}!`);
+  describe('info', () => {
+    it('should return app info', () => {
+      const info = {
+        name: expect.any(String),
+        version: expect.any(String),
+        endpoint: expect.any(String),
+      };
+      jest.spyOn(appResolver, 'info').mockImplementation(() => info);
+      expect(appResolver.info()).toBe(info);
     });
   });
 });
