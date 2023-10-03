@@ -5,7 +5,7 @@ export async function roleSeeder(prisma: PrismaClient) {
 
   console.log('Seeding roles...');
 
-  const crudPermissions = await prisma.permission.findMany({
+  const userPermissions = await prisma.permission.findMany({
     where: {
       subject: 'user',
       NOT: {
@@ -14,21 +14,35 @@ export async function roleSeeder(prisma: PrismaClient) {
     },
   });
 
-  const managePermissions = await prisma.permission.findMany({
+  const adminPermissions = await prisma.permission.findMany({
     where: {
       subject: 'user',
       action: PermissionAction.MANAGE,
     },
   });
 
+  const adminRolePermissions = await prisma.permission.findMany({
+    where: {
+      subject: 'role',
+      action: PermissionAction.MANAGE,
+    },
+  });
+
+  const adminPermissionPermissions = await prisma.permission.findMany({
+    where: {
+      subject: 'permission',
+      action: PermissionAction.MANAGE,
+    },
+  });
+
   // Create roles
-  const rolesData: Prisma.RoleCreateInput[] = [
+  const roles: Prisma.RoleCreateInput[] = [
     {
       name: 'User',
       description: 'Default role for all users',
       createdAt: new Date(),
       permissions: {
-        connect: crudPermissions,
+        connect: userPermissions,
       },
     },
     {
@@ -36,15 +50,17 @@ export async function roleSeeder(prisma: PrismaClient) {
       description: 'Admin role for managing all resources',
       createdAt: new Date(),
       permissions: {
-        connect: managePermissions,
+        connect: [
+          ...adminPermissions,
+          ...adminRolePermissions,
+          ...adminPermissionPermissions,
+        ],
       },
     },
   ];
 
   try {
-    await Promise.all(
-      rolesData.map((role) => prisma.role.create({ data: role })),
-    );
+    await Promise.all(roles.map((role) => prisma.role.create({ data: role })));
   } catch (error) {
     console.error(error);
   }
