@@ -7,7 +7,6 @@ export async function permissionSeeder(prisma: PrismaClient) {
 
   const permissions = getPermissions();
 
-  // console.log(permissions);
   try {
     await Promise.all(
       permissions.map((permission) =>
@@ -26,13 +25,13 @@ function getPermissions() {
 
   for (const subject of Object.values(PermissionSubject)) {
     for (const perms of Object.keys(PermissionAction)) {
-      const permission = Permissions[`${perms}${subject}`];
+      const description = Permissions[`${perms}${subject}`];
       const action = PermissionAction[perms];
-      if (permission) {
+      if (description) {
         permissions.push({
           action,
           subject,
-          description: permission.description,
+          description,
         });
       }
     }
@@ -61,70 +60,20 @@ enum PermissionAction {
 
 // Justification: This is used dynamically in permissionSeeder.ts
 // noinspection JSUnusedGlobalSymbols
-const Permissions = {
-  // User
-  ManageUser: {
-    description: 'Manages all user resources',
-    condition: '',
-  },
-  CreateUser: {
-    description: 'Create user',
-    condition: '',
-  },
-  ReadUser: {
-    description: 'Read user',
-    condition: '',
-  },
-  UpdateUser: {
-    description: 'Update user',
-    condition: '',
-  },
-  DeleteUser: {
-    description: 'Delete user',
-    condition: '',
-  },
-
-  // Role
-  ManageRole: {
-    description: 'Manages all role resources',
-    condition: '',
-  },
-  CreateRole: {
-    description: 'Create role',
-    condition: '',
-  },
-  ReadRole: {
-    description: 'Read role',
-    condition: '',
-  },
-  UpdateRole: {
-    description: 'Update role',
-    condition: '',
-  },
-  DeleteRole: {
-    description: 'Delete role',
-    condition: '',
-  },
-
-  // Permission
-  ManagePermission: {
-    description: 'Manages all permission resources',
-    condition: '',
-  },
-  CreatePermission: {
-    description: 'Create permission',
-    condition: '',
-  },
-  ReadPermission: {
-    description: 'Read permission',
-    condition: '',
-  },
-  UpdatePermission: {
-    description: 'Update permission',
-    condition: '',
-  },
-  DeletePermission: {
-    description: 'Delete permission',
-    condition: '',
-  },
-};
+enum Permissions {
+  ManageUser = 'Manages all user resources',
+  CreateUser = 'Create user',
+  ReadUser = 'Read user',
+  UpdateUser = 'Update user',
+  DeleteUser = 'Delete user',
+  ManageRole = 'Manages all role resources',
+  CreateRole = 'Create role',
+  ReadRole = 'Read role',
+  UpdateRole = 'Update role',
+  DeleteRole = 'Delete role',
+  ManagePermission = 'Manages all permission resources',
+  CreatePermission = 'Create permission',
+  ReadPermission = 'Read permission',
+  UpdatePermission = 'Update permission',
+  DeletePermission = 'Delete permission',
+}
