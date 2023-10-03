@@ -1,16 +1,18 @@
-import { PrismaClient, User } from '@prisma/client';
+import { PrismaClient, User, Role, Permission } from '@prisma/client';
 import { AbilityBuilder, PureAbility } from '@casl/ability';
 import { createPrismaAbility, PrismaQuery, Subjects } from '@casl/prisma';
 
 const prisma = new PrismaClient();
 
-type ResourceType = 'User' | 'Post';
+type ResourceType = 'User' | 'Role' | 'Permission';
 
 type AppAbility = PureAbility<
   [
     string,
     Subjects<{
       User: User;
+      Role: Role;
+      Permission: Permission;
     }>,
   ],
   PrismaQuery
@@ -30,16 +32,12 @@ export async function buildAbilities(userId: string): Promise<AppAbility> {
   const { can, build } = new AbilityBuilder<AppAbility>(createPrismaAbility);
 
   permissions.forEach((permission) => {
-    const subjectType = permission.subject.toLowerCase() as ResourceType;
-    if (Object.keys(can).includes(subjectType)) {
-      can(permission.action, 'User', permission.condition);
-    } else {
-      throw new Error('Invalid subject type');
-    }
+    const { action, subject } = permission;
+    can(action, subject as ResourceType, { id: userId });
   });
   return build();
 }
 
-export async function createAbilityForUser(userId: string) {
+export async function createAbility(userId: string) {
   return await buildAbilities(userId);
 }

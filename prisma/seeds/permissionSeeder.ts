@@ -7,6 +7,7 @@ export async function permissionSeeder(prisma: PrismaClient) {
 
   const permissions = getPermissions();
 
+  // console.log(permissions);
   try {
     await Promise.all(
       permissions.map((permission) =>
@@ -23,20 +24,29 @@ export async function permissionSeeder(prisma: PrismaClient) {
 function getPermissions() {
   const permissions = [];
 
-  for (const perms of Object.keys(PermissionAction)) {
-    for (const subject of Object.values(PermissionSubject)) {
-      const description = PermissionDescription[`${perms}${subject}`];
+  for (const subject of Object.values(PermissionSubject)) {
+    for (const perms of Object.keys(PermissionAction)) {
+      const permission = Permissions[`${perms}${subject}`];
       const action = PermissionAction[perms];
-      if (description) {
-        permissions.push({ action, subject, description });
+      if (permission) {
+        permissions.push({
+          action,
+          subject,
+          description: permission.description,
+        });
       }
     }
   }
+
   return permissions;
 }
 
+// Justification: This is used dynamically in permissionSeeder.ts
+// noinspection JSUnusedGlobalSymbols
 export enum PermissionSubject {
   User = 'User',
+  Role = 'Role',
+  Permission = 'Permission',
 }
 
 // Justification: This is used dynamically in permissionSeeder.ts
@@ -51,10 +61,70 @@ enum PermissionAction {
 
 // Justification: This is used dynamically in permissionSeeder.ts
 // noinspection JSUnusedGlobalSymbols
-enum PermissionDescription {
-  ManageUser = 'Manages all user resources',
-  CreateUser = 'Create user',
-  ReadUser = 'Read user',
-  UpdateUser = 'Update user',
-  DeleteUser = 'Delete user',
-}
+const Permissions = {
+  // User
+  ManageUser: {
+    description: 'Manages all user resources',
+    condition: '',
+  },
+  CreateUser: {
+    description: 'Create user',
+    condition: '',
+  },
+  ReadUser: {
+    description: 'Read user',
+    condition: '',
+  },
+  UpdateUser: {
+    description: 'Update user',
+    condition: '',
+  },
+  DeleteUser: {
+    description: 'Delete user',
+    condition: '',
+  },
+
+  // Role
+  ManageRole: {
+    description: 'Manages all role resources',
+    condition: '',
+  },
+  CreateRole: {
+    description: 'Create role',
+    condition: '',
+  },
+  ReadRole: {
+    description: 'Read role',
+    condition: '',
+  },
+  UpdateRole: {
+    description: 'Update role',
+    condition: '',
+  },
+  DeleteRole: {
+    description: 'Delete role',
+    condition: '',
+  },
+
+  // Permission
+  ManagePermission: {
+    description: 'Manages all permission resources',
+    condition: '',
+  },
+  CreatePermission: {
+    description: 'Create permission',
+    condition: '',
+  },
+  ReadPermission: {
+    description: 'Read permission',
+    condition: '',
+  },
+  UpdatePermission: {
+    description: 'Update permission',
+    condition: '',
+  },
+  DeletePermission: {
+    description: 'Delete permission',
+    condition: '',
+  },
+};
