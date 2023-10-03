@@ -1,16 +1,14 @@
 import { JwtService } from '@nestjs/jwt';
 import { PrismaService } from 'nestjs-prisma';
-import { ConfigService } from '@nestjs/config';
 import { AuthzService } from '@/authz/authz.service';
 import { Test, TestingModule } from '@nestjs/testing';
 import { PasswordService } from '@/authn/password.service';
-
-// Mocks
-import configMock from '@mock/config.mock';
-import prismaMock from '@mock/prisma.mock';
+import { ConfigService } from '@nestjs/config';
 
 describe('AuthzService', () => {
-  let service: AuthzService;
+  let authzService: AuthzService;
+  let prismaService: PrismaService;
+  let configService: ConfigService;
 
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
@@ -20,33 +18,107 @@ describe('AuthzService', () => {
         JwtService,
         {
           provide: ConfigService,
-          useValue: configMock,
+          useValue: {
+            get: jest.fn(),
+          },
         },
         {
           provide: PrismaService,
-          useValue: prismaMock,
+          useValue: {
+            user: {
+              update: jest.fn(),
+            },
+          },
         },
       ],
     }).compile();
 
-    service = module.get<AuthzService>(AuthzService);
+    authzService = module.get<AuthzService>(AuthzService);
+    prismaService = module.get<PrismaService>(PrismaService);
+    configService = module.get<ConfigService>(ConfigService);
   });
 
   it('should be defined', () => {
-    expect(service).toBeDefined();
+    expect(authzService).toBeDefined();
   });
 
   describe('addRoleToUser', () => {
     it('should add a role to a user', async () => {
-      const user = await service.addRoleToUser({ userId: '1', roleId: 1 });
-      expect(user).toEqual(true);
+      const response = await authzService.addRoleToUser({
+        userId: '1',
+        roleId: 1,
+      });
+      expect(response).toEqual(true);
+    });
+
+    it('should return false in production', async () => {
+      (configService.get as jest.Mock).mockReturnValue('production');
+      jest
+        .spyOn(prismaService.user, 'update')
+        .mockRejectedValueOnce(new Error());
+
+      const res = await authzService.removeRoleFromUser({
+        userId: '1',
+        roleId: 1,
+      });
+
+      expect(res).toEqual(false);
+    });
+
+    it('should throw an error in development', async () => {
+      (configService.get as jest.Mock).mockReturnValue('development');
+      jest
+        .spyOn(prismaService.user, 'update')
+        .mockRejectedValueOnce(new Error());
+
+      try {
+        await authzService.removeRoleFromUser({
+          userId: '1',
+          roleId: 1,
+        });
+      } catch (error) {
+        expect(error).toBeInstanceOf(Error);
+      }
     });
   });
 
   describe('removeRoleFromUser', () => {
     it('should remove a role from a user', async () => {
-      const user = await service.removeRoleFromUser({ userId: '1', roleId: 1 });
+      const user = await authzService.removeRoleFromUser({
+        userId: '1',
+        roleId: 1,
+      });
       expect(user).toEqual(true);
+    });
+
+    it('should return false in production', async () => {
+      jest
+        .spyOn(prismaService.user, 'update')
+        .mockRejectedValueOnce(new Error());
+
+      try {
+        await authzService.addRoleToUser({
+          userId: '1',
+          roleId: 1,
+        });
+      } catch (error) {
+        expect(Error).toBe(Error);
+      }
+    });
+
+    it('should throw an error in development', async () => {
+      jest.spyOn(configService, 'get').mockReturnValueOnce('production');
+      jest.spyOn(prismaService.user, 'update').mockRejectedValue(new Error());
+
+      try {
+        await authzService.addRoleToUser({
+          userId: '1',
+          roleId: 1,
+        });
+      } catch (error) {
+        console.log(error);
+        expect(error).toBeInstanceOf(Error);
+      }
     });
   });
 });

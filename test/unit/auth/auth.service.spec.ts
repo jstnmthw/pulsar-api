@@ -2,9 +2,9 @@ import { JwtService } from '@nestjs/jwt';
 import { PrismaService } from 'nestjs-prisma';
 import { ConfigService } from '@nestjs/config';
 import { AuthService } from '@/authn/auth.service';
-import { ConflictException, UnauthorizedException } from '@nestjs/common';
 import { Test, TestingModule } from '@nestjs/testing';
 import { PasswordService } from '@/authn/password.service';
+import { ConflictException, UnauthorizedException } from '@nestjs/common';
 
 // Mocks
 import prismaMock from '@mock/prisma.mock';
