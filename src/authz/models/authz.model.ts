@@ -5,6 +5,9 @@ export class Authz {
   @Field(() => Boolean, { description: 'Returns true on success' })
   success: boolean;
 
-  @Field(() => String, { description: 'Provides error message' })
+  @Field(() => String, {
+    description: 'Provides error message',
+    nullable: true,
+  })
   errorMessage: string;
 }

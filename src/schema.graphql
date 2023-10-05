@@ -18,7 +18,7 @@ type Auth {
 
 type Authz {
   """Provides error message"""
-  errorMessage: String!
+  errorMessage: String
 
   """Returns true on success"""
   success: Boolean!
@@ -154,6 +154,9 @@ type User {
 
   """User model first name"""
   firstname: String
+
+  """User model full name"""
+  fullName: String
 
   """User model id"""
   id: String!

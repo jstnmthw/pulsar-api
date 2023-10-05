@@ -33,9 +33,13 @@ export async function buildAbilities(userId: string): Promise<AppAbility> {
 
   permissions.forEach((permission) => {
     const { action, subject } = permission;
-    can(action, subject as ResourceType, { id: userId });
+    can(action, subject as ResourceType);
+    can('read', 'Role');
+    console.log(`User ${userId} has ${action} permission on ${subject}`);
   });
-  return build();
+  const buildR = build();
+  console.log(buildR.rules);
+  return buildR;
 }
 
 export async function createAbility(userId: string) {
